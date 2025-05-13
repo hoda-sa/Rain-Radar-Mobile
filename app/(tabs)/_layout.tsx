@@ -34,7 +34,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="favorites"
         options={{
           title: 'Favorites',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="heart.fill" color={color} />,

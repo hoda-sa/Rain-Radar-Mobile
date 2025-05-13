@@ -130,3 +130,7 @@ export const useFavorites = () => {
     }
     return context;
 };
+
+export default function FavoritesContextPage() {
+    return null;
+}

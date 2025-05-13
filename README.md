@@ -1,50 +1,187 @@
-# Welcome to your Expo app 👋
+# Rain Radar - Weather Forecasting App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+![Rain Radar Logo](/assets/images/logo.png)
 
-## Get started
+## Overview
 
-1. Install dependencies
+Rain Radar is a modern, user-friendly mobile weather application built with React Native and Expo. It provides real-time weather information, 5-day forecasts, and allows users to save their favorite locations for quick access. Whether you're planning your day or your next trip, Rain Radar keeps you prepared with accurate weather updates from anywhere in the world.
 
-   ```bash
-   npm install
-   ```
+## Features
 
-2. Start the app
+- **Real-time Weather Data**: Access current weather conditions including temperature, feels-like temperature, humidity, wind speed, pressure, and visibility.
+- **5-Day Forecast**: Plan ahead with a detailed 5-day weather forecast.
+- **Favorite Locations**: Save your most visited places for quick access to their weather information.
+- **Unit Toggle**: Switch between metric (°C) and imperial (°F) units based on your preference.
+- **Global Coverage**: Get weather information for cities worldwide powered by the OpenWeatherMap API.
+- **Intuitive Design**: Clean, responsive UI that adapts to different devices and screen sizes.
+- **Time & Location Awareness**: Shows local time and date based on the location's timezone.
+- **Weather-Based Styling**: Visual interface adapts to the current weather conditions and time of day.
 
-   ```bash
-   npx expo start
-   ```
+## Screenshots
 
-In the output, you'll find options to open the app in a
+<table>
+  <tr>
+    <td><img src="./assets/images/LA.png" alt="Current Weather Screen Sunny" width="300"/></td>
+    <td><img src="./assets/images/Vancouver.png" alt="Current Weather Screen Cloudy" width="300"/></td>
+     <td><img src="./assets/images/Favs.png" alt="Favorites Screen" width="300"/></td>
+  </tr>
+</table>
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Technology Stack
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+- **Framework**: React Native
+- **Development Platform**: Expo
+- **Language**: TypeScript
+- **Navigation**: Expo Router
+- **State Management**: React Context API
+- **Data Persistence**: AsyncStorage
+- **API**: OpenWeatherMap
+- **UI Components**: React Native built-in components and Expo Vector Icons
+- **Animations**: React Native Animated API
 
-## Get a fresh project
+## Installation and Setup
 
-When you're ready, run:
+### Prerequisites
+
+- Node.js (v14 or later)
+- npm or yarn
+- Expo CLI
+- OpenWeatherMap API key
+
+### Setting Up the Project
+
+1. **Clone the repository**
 
 ```bash
-npm run reset-project
+git clone https://github.com/your-username/rain-radar.git
+cd rain-radar
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+2. **Install dependencies**
 
-## Learn more
+```bash
+npm install
+# or
+yarn install
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+3. **Configure API key**
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+Create a `.env` file in the project root and add your OpenWeatherMap API key:
 
-## Join the community
+```
+OPEN_WEATHER_API_KEY=your_api_key_here
+```
 
-Join our community of developers creating universal apps.
+4. **Create app.config.js**
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Create an `app.config.js` file:
+
+```javascript
+import 'dotenv/config';
+
+// Import the existing configuration from app.json
+const appJson = require('./app.json');
+
+// Extend the configuration with environment variables
+export default {
+  ...appJson.expo,
+  extra: {
+    openWeatherApiKey: process.env.OPEN_WEATHER_API_KEY || "",
+  },
+};
+```
+
+5. **Start the development server**
+
+```bash
+npx expo start
+```
+
+6. **Run on a device or emulator**
+
+- Scan the QR code with the Expo Go app on your device
+- Press 'a' for Android emulator
+- Press 'i' for iOS simulator
+
+## Project Structure
+
+```
+rain-radar/
+├── app/                      # Main application code using Expo Router
+│   ├── (tabs)/               # Tab-based navigation screens
+│   │   ├── index.tsx         # Weather screen (home)
+│   │   ├── favorites.tsx     # Favorites screen
+│   │   └── _layout.tsx       # Tab navigation layout
+│   ├── context/              # React Context providers
+│   │   └── FavoritesContext.tsx  # Favorites state management
+│   └── _layout.tsx           # Root layout with providers
+├── assets/                   # Static assets
+│   └── images/               # App images and icons
+├── components/               # Reusable UI components
+│   ├── CurrentWeather.tsx    # Current weather display
+│   ├── FavoriteButton.tsx    # Add/remove location from favorites
+│   ├── ForecastList.tsx      # 5-day forecast display
+│   ├── SearchBar.tsx         # City search input
+│   └── ...                   # Other components
+├── utils/                    # Utility functions and services
+│   ├── weatherApi.ts         # OpenWeatherMap API integration
+├── app.config.js             # Expo configuration with env variables
+├── app.json                  # Expo app configuration
+├── .env                      # Environment variables (gitignored)
+├── package.json              # Project dependencies
+└── tsconfig.json             # TypeScript configuration
+```
+
+## Usage
+
+### Searching for a City
+
+1. Enter a city name in the search bar
+2. Tap the search button or press enter
+3. View the current weather and forecast
+
+### Adding a City to Favorites
+
+1. Search for a city to view its weather
+2. Tap the heart icon to add it to favorites
+3. Access all favorite cities from the Favorites tab
+
+### Switching Units
+
+Tap the °C/°F toggle to switch between metric and imperial units.
+
+### Refreshing Weather Data
+
+Pull down on the screen to refresh the current weather data.
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgements
+
+- [OpenWeatherMap](https://openweathermap.org/) for providing the weather data API
+- [Expo](https://expo.dev/) for the amazing development platform
+- [React Native](https://reactnative.dev/) for the mobile framework
+- [Ionicons](https://ionic.io/ionicons) for the beautiful icons
+
+## Contact
+
+Your Name - your.email@example.com
+
+Project Link: [https://github.com/hoda-sa/Rain-Radar-Mobile.git](https://github.com/hoda-sa/Rain-Radar-Mobile.git)
+
+---
+
+Built with ❤️ by Hoda Aghaei
