@@ -1,7 +1,5 @@
 # Rain Radar - Weather Forecasting App
 
-![Rain Radar Logo](/assets/images/logo.png)
-
 ## Overview
 
 Rain Radar is a modern, user-friendly mobile weather application built with React Native and Expo. It provides real-time weather information, 5-day forecasts, and allows users to save their favorite locations for quick access. Whether you're planning your day or your next trip, Rain Radar keeps you prepared with accurate weather updates from anywhere in the world.
@@ -22,8 +20,8 @@ Rain Radar is a modern, user-friendly mobile weather application built with Reac
 <table>
   <tr>
     <td><img src="./assets/images/LA.png" alt="Current Weather Screen Sunny" width="300"/></td>
+         <td><img src="./assets/images/Favs.png" alt="Favorites Screen" width="300"/></td>
     <td><img src="./assets/images/Vancouver.png" alt="Current Weather Screen Cloudy" width="300"/></td>
-     <td><img src="./assets/images/Favs.png" alt="Favorites Screen" width="300"/></td>
   </tr>
 </table>
 
@@ -167,7 +165,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+Copyright © 2025 Hoda Co. All rights reserved.
 
 ## Acknowledgements
 
@@ -177,8 +175,6 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - [Ionicons](https://ionic.io/ionicons) for the beautiful icons
 
 ## Contact
-
-Your Name - your.email@example.com
 
 Project Link: [https://github.com/hoda-sa/Rain-Radar-Mobile.git](https://github.com/hoda-sa/Rain-Radar-Mobile.git)
 

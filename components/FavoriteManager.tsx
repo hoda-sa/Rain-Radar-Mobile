@@ -1,19 +1,28 @@
-// components/FavoriteManager.tsx
+/**
+ * FavoriteManager Component
+ * 
+ * A larger button component for adding/removing cities from favorites.
+ * Displays different styling and text based on the favorite status.
+ */
+
 import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useFavorites } from '../app/context/FavoritesContext';
 
 interface FavoriteManagerProps {
-    weatherData: any;
-    onPress?: () => void;
+    weatherData: any;          // Weather data for the city
+    onPress?: () => void;      // Additional callback function (optional)
 }
 
 const FavoriteManager: React.FC<FavoriteManagerProps> = ({ weatherData, onPress }) => {
+    // Get favorite management functions from context
     const { isFavorite, addFavorite, removeFavorite } = useFavorites();
 
+    // If no weather data, don't render anything
     if (!weatherData) return null;
 
+    // Extract needed data from weather object
     const { name } = weatherData;
     const country = weatherData.sys.country;
     const temp = weatherData.main.temp;

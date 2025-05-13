@@ -1,3 +1,12 @@
+/**
+ * ErrorAlert Component
+ * 
+ * Displays an error message when weather data cannot be retrieved,
+ * providing user-friendly information about the error and offering
+ * suggestions to resolve the issue.
+ */
+
+
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
@@ -6,6 +15,9 @@ interface ErrorAlertProps {
     message: string;
 }
 
+/**
+ * ErrorAlert component - Displays error messages in a user-friendly format
+ */
 const ErrorAlert: React.FC<ErrorAlertProps> = ({ message }) => {
     return (
         <View style={styles.alertContainer}>
@@ -23,9 +35,7 @@ const ErrorAlert: React.FC<ErrorAlertProps> = ({ message }) => {
             <TouchableOpacity
                 style={styles.reloadButton}
                 onPress={() => {
-                    // In React Native, we can't use window.location.reload()
-                    // We'll need to implement a reload function in the parent component
-                    // For now, we'll just leave this as a placeholder
+                    // placeholder for reload function
                     console.log('App should reload');
                 }}
             >

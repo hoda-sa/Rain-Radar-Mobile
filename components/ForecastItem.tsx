@@ -1,36 +1,48 @@
+/**
+ * ForecastItem Component
+ * 
+ * Displays forecast information for a single day, including
+ * date, temperature, and weather conditions with appropriate styling.
+ */
+
 import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import { getWeatherIconUrl } from '../utils/weatherApi';
 
 interface ForecastData {
-    dt: number;
+    dt: number;                // Timestamp (Unix, seconds)
     main: {
-        temp: number;
-        temp_min?: number;
-        temp_max?: number;
+        temp: number;          // Temperature
+        temp_min?: number;     // Minimum temperature (optional)
+        temp_max?: number;     // Maximum temperature (optional)
     };
     weather: Array<{
-        description: string;
-        icon: string;
+        description: string;   // Weather condition description
+        icon: string;          // Icon code for weather condition
     }>;
 }
 
 interface ForecastItemProps {
-    forecast: ForecastData;
-    units: 'metric' | 'imperial';
+    forecast: ForecastData;            // Forecast data for a specific day
+    units: 'metric' | 'imperial';      // Units format (Celsius or Fahrenheit)
 }
 
 const ForecastItem: React.FC<ForecastItemProps> = ({ forecast, units }) => {
+    // Convert timestamp to Date object
     const date = new Date(forecast.dt * 1000);
-    const day = date.toLocaleDateString('en-US', { weekday: 'short' });
-    const month = date.toLocaleDateString('en-US', { month: 'short' });
+
+    // Format date parts
+    const day = date.toLocaleDateString('en-US', { weekday: 'short' }); // e.g., "Mon"
+    const month = date.toLocaleDateString('en-US', { month: 'short' }); // e.g., "Jan"
     const dayNum = date.getDate();
 
+    // Extract forecast data
     const temp = Math.round(forecast.main.temp);
     const description = forecast.weather[0].description;
     const iconCode = forecast.weather[0].icon;
     const iconUrl = getWeatherIconUrl(iconCode);
 
+    // Set temperature unit based on selected units
     const tempUnit = units === 'metric' ? '°C' : '°F';
 
     // Get min and max temp if available

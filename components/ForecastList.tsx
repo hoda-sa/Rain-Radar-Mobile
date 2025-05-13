@@ -1,31 +1,43 @@
+/**
+ * ForecastList Component
+ * 
+ * Displays a horizontal scrollable list of weather forecasts for the next 5 days.
+ * Processes raw forecast data to show one forecast item per day.
+ */
+
 import React from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
 import ForecastItem from './ForecastItem';
 
 interface ForecastData {
-    dt: number;
+    dt: number;                // Timestamp (Unix, seconds)
     main: {
-        temp: number;
-        temp_min?: number;
-        temp_max?: number;
+        temp: number;          // Temperature
+        temp_min?: number;     // Minimum temperature (optional)
+        temp_max?: number;     // Maximum temperature (optional)
     };
     weather: Array<{
-        description: string;
-        icon: string;
+        description: string;   // Weather condition description
+        icon: string;          // Icon code for weather condition
     }>;
 }
 
 interface ForecastListProps {
     data: {
-        list: ForecastData[];
+        list: ForecastData[];  // Array of forecast data items
     } | null;
-    units: 'metric' | 'imperial';
+    units: 'metric' | 'imperial';  // Units format (Celsius or Fahrenheit)
 }
 
 const ForecastList: React.FC<ForecastListProps> = ({ data, units }) => {
+    // Return null if no data is provided
     if (!data || !data.list) return null;
 
-    // Group forecast data by day
+    /**
+   * Group forecast data by day, selecting one forecast per day
+   * OpenWeatherMap provides forecasts in 3-hour intervals for 5 days
+   * We want to show one forecast per day, preferably around noon
+   */
     const dailyForecast = data.list.reduce<Record<string, ForecastData>>((acc, item) => {
         const date = new Date(item.dt * 1000);
         const day = date.toISOString().split('T')[0];

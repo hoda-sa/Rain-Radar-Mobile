@@ -1,11 +1,18 @@
+/**
+ * WeatherIcon Component
+ * 
+ * Renders weather condition icons from the OpenWeatherMap API
+ * with customizable sizes.
+ */
+
 import React from 'react';
 import { Image, StyleSheet } from 'react-native';
 import { getWeatherIconUrl } from '../utils/weatherApi';
 
 interface WeatherIconProps {
-    iconCode: string;
-    size?: '1x' | '2x' | '3x';
-    alt?: string;
+    iconCode: string;                 // Icon code from OpenWeatherMap
+    size?: '1x' | '2x' | '3x';        // Size variant of the icon
+    alt?: string;                     // Accessibility label
 }
 
 const WeatherIcon: React.FC<WeatherIconProps> = ({

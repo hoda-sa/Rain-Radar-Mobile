@@ -13,6 +13,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { registerRootComponent } from 'expo';
 import { useLocalSearchParams } from 'expo-router';
 import { useEffect } from 'react';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 // Import components
 import FavoriteManager from '../../components/FavoriteManager';
@@ -25,7 +26,6 @@ import ForecastList from '../../components/ForecastList';
 import UnitToggle from '../../components/UnitToggle';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import ErrorAlert from '../../components/ErrorAlert';
-import Footer from '../../components/Footer';
 import useWeather from '../../utils/useWeather';
 
 // Feature card component for the features section
@@ -46,6 +46,8 @@ const FeatureCard: React.FC<FeatureCardProps> = ({ iconName, iconColor, title, d
 
 // Main App component
 const App: React.FC = () => {
+
+  const insets = useSafeAreaInsets();
   const { city } = useLocalSearchParams<{ city?: string }>();
   // Use the weather custom hook
   const {
@@ -63,6 +65,7 @@ const App: React.FC = () => {
       handleSearch(city);
     }
   }, [city]);
+
 
   return (
 
@@ -149,7 +152,7 @@ const App: React.FC = () => {
             </View>
           </FadeIn>
         </ScrollView>
-        <Footer />
+
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
@@ -168,6 +171,9 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     padding: 16,
+  },
+  footerContainer: {
+    width: '100%',
   },
   searchContainer: {
     flexDirection: 'row',

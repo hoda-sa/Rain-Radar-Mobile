@@ -1,18 +1,26 @@
-// components/FadeIn.tsx
+/**
+ * FadeIn Component
+ * 
+ * A reusable animation wrapper that applies a fade-in effect to its children.
+ * Useful for creating smooth transitions when components mount or when data loads.
+ */
 import React, { useEffect, useRef } from 'react';
 import { Animated, ViewProps } from 'react-native';
 
 interface FadeInProps extends ViewProps {
-    duration?: number;
-    delay?: number;
-    initialOpacity?: number;
-    children: React.ReactNode;
+    duration?: number;          // Animation duration in milliseconds
+    delay?: number;             // Delay before animation starts in milliseconds
+    initialOpacity?: number;    // Starting opacity value (0-1)
+    children: React.ReactNode;  // Child components to animate
 }
 
+/**
+ * FadeIn component - Provides fade-in animation for child components
+ */
 const FadeIn: React.FC<FadeInProps> = ({
-    duration = 500,
-    delay = 0,
-    initialOpacity = 0,
+    duration = 500,             // Default duration: 500ms
+    delay = 0,                  // Default delay: 0ms
+    initialOpacity = 0,         // Default starting opacity: 0 (invisible)
     children,
     style,
     ...props
@@ -29,7 +37,7 @@ const FadeIn: React.FC<FadeInProps> = ({
             useNativeDriver: true, // This improves animation performance
         }).start();
 
-        // Optional: Clean up animation when component unmounts
+        // Clean up animation when component unmounts
         return () => {
             opacity.setValue(initialOpacity);
         };

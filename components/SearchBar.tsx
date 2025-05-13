@@ -1,3 +1,10 @@
+/**
+ * SearchBar Component
+ * 
+ * Provides a search input field with a button that allows users to search
+ * for weather information for specific cities.
+ */
+
 import React, { useState } from 'react';
 import { View, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
@@ -10,6 +17,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
     const [searchTerm, setSearchTerm] = useState('');
 
     const handleSubmit = () => {
+        // Only search if there's a non-empty term after trimming whitespace
         if (searchTerm.trim()) {
             onSearch(searchTerm.trim());
             setSearchTerm('');

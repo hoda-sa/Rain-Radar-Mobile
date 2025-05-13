@@ -5,7 +5,7 @@ const Footer: React.FC = () => {
     return (
         <View style={styles.footer}>
             <Text style={styles.footerText}>
-                Weather Forecasting App © Hoda Aghaei {new Date().getFullYear()} | Powered by{' '}
+                © Hoda Aghaei {new Date().getFullYear()} | Powered by{' '}
                 <Text
                     style={styles.link}
                     onPress={() => Linking.openURL('https://openweathermap.org/')}
@@ -21,6 +21,7 @@ const styles = StyleSheet.create({
     footer: {
         backgroundColor: '#343a40',
         padding: 12,
+        marginBottom: 15,
         alignItems: 'center',
         justifyContent: 'center',
     },

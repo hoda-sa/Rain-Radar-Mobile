@@ -1,9 +1,20 @@
+/**
+ * CurrentWeather Component
+ * 
+ * Displays the current weather information for a specified location including
+ * temperature, weather conditions, local time, and detailed weather metrics.
+ * The component adapts its background color based on time of day and weather condition.
+ */
+
 import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import { getWeatherIconUrl } from '../utils/weatherApi';
 import WeatherDetails from './WeatherDetails'
 import FavoriteButton from './FavoriteButton';
 
+/**
+ * Interface for the weather data received from API
+ */
 
 interface WeatherData {
   name: string;
@@ -34,9 +45,14 @@ interface CurrentWeatherProps {
   units: 'metric' | 'imperial';
 }
 
+/**
+ * CurrentWeather component - Displays detailed current weather information
+ */
+
 const CurrentWeather: React.FC<CurrentWeatherProps> = ({ data, units }) => {
   if (!data) return null;
 
+  // Destructure weather data
   const {
     name,
     sys: { country },
@@ -108,8 +124,6 @@ const CurrentWeather: React.FC<CurrentWeatherProps> = ({ data, units }) => {
         <View style={styles.row}>
           <View style={styles.column}>
             <View style={styles.locationInfo}>
-              {/* Add the favorite button next to location */}
-
               <View style={[styles.weatherCard, timeStyle, weatherStyle]}>
                 <View style={styles.cardBody}>
                   <View style={styles.row}>

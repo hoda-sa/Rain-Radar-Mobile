@@ -1,14 +1,21 @@
+/**
+ * WeatherDetails Component
+ * 
+ * Displays detailed weather metrics including feels-like temperature,
+ * humidity, wind speed, pressure, and visibility.
+ */
+
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 interface WeatherDetailsProps {
-    feelsLike: number;
-    humidity: number;
-    windSpeed: number;
-    pressure: number;
-    visibility: number;
-    tempUnit: string;
-    windUnit: string;
+    feelsLike: number;        // "Feels like" temperature
+    humidity: number;         // Humidity percentage
+    windSpeed: number;        // Wind speed
+    pressure: number;         // Atmospheric pressure
+    visibility: number;       // Visibility distance
+    tempUnit: string;         // Temperature unit (°C or °F)
+    windUnit: string;         // Wind speed unit (m/s or mph)
 }
 
 const WeatherDetails: React.FC<WeatherDetailsProps> = ({
