@@ -1,110 +1,225 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Alert, SafeAreaView } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { useFavorites, FavoriteCity } from '../context/FavoritesContext';
+import { fetchWeatherByCity } from '../../utils/weatherApi';
+import { useRouter } from 'expo-router';
+import { RefreshControl } from 'react-native';
 
-import { Collapsible } from '@/components/Collapsible';
-import { ExternalLink } from '@/components/ExternalLink';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-import { IconSymbol } from '@/components/ui/IconSymbol';
+export default function FavoritesScreen() {
+  const { favorites, removeFavorite, updateFavorite } = useFavorites();
+  const [refreshing, setRefreshing] = useState(false);
+  const router = useRouter();
 
-export default function TabTwoScreen() {
+
+  // Remove a city with confirmation
+  const confirmRemove = (cityId: string, cityName: string) => {
+    Alert.alert(
+      "Remove Favorite",
+      `Are you sure you want to remove ${cityName} from your favorites?`,
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Remove",
+          onPress: () => removeFavorite(cityId),
+          style: "destructive"
+        }
+      ]
+    );
+  };
+
+  // Add refresh function
+  const refreshFavorites = async () => {
+    setRefreshing(true);
+
+    try {
+      // Update each favorite's weather data
+      const updatePromises = favorites.map(async (favorite) => {
+        try {
+          const weatherData = await fetchWeatherByCity(favorite.name);
+
+          if (weatherData) {
+            updateFavorite({
+              ...favorite,
+              lastTemp: weatherData.main.temp,
+              lastCondition: weatherData.weather[0].description,
+              lastUpdated: Date.now()
+            });
+          }
+        } catch (error) {
+          console.error(`Error updating ${favorite.name}:`, error);
+        }
+      });
+
+      await Promise.all(updatePromises);
+    } catch (error) {
+      console.error('Error refreshing favorites:', error);
+    } finally {
+      setRefreshing(false);
+    }
+  };
+
+  // Render a favorite city item with proper typing
+  const renderFavoriteItem = ({ item }: { item: FavoriteCity }) => {
+    const formattedDate = item.lastUpdated
+      ? new Date(item.lastUpdated).toLocaleString()
+      : 'Never';
+
+    return (
+      <TouchableOpacity
+        style={styles.favoriteCard}
+
+      >
+        <View style={styles.favoriteInfo}>
+          <Text style={styles.cityName}>{item.name}</Text>
+          <Text style={styles.countryName}>{item.country}</Text>
+
+          {item.lastTemp && (
+            <Text style={styles.temperature}>
+              {Math.round(item.lastTemp)}°
+            </Text>
+          )}
+
+          {item.lastCondition && (
+            <Text style={styles.condition}>
+              {item.lastCondition}
+            </Text>
+          )}
+
+          <Text style={styles.lastUpdated}>
+            Last updated: {formattedDate}
+          </Text>
+        </View>
+
+        <TouchableOpacity
+          style={styles.removeButton}
+          onPress={() => confirmRemove(item.id, item.name)}
+        >
+          <Ionicons name="trash-outline" size={20} color="#dc3545" />
+        </TouchableOpacity>
+      </TouchableOpacity>
+    );
+  };
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
-      headerImage={
-        <IconSymbol
-          size={310}
-          color="#808080"
-          name="chevron.left.forwardslash.chevron.right"
-          style={styles.headerImage}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Explore</ThemedText>
-      </ThemedView>
-      <ThemedText>This app includes example code to help you get started.</ThemedText>
-      <Collapsible title="File-based routing">
-        <ThemedText>
-          This app has two screens:{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/explore.tsx</ThemedText>
-        </ThemedText>
-        <ThemedText>
-          The layout file in <ThemedText type="defaultSemiBold">app/(tabs)/_layout.tsx</ThemedText>{' '}
-          sets up the tab navigator.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/router/introduction">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Android, iOS, and web support">
-        <ThemedText>
-          You can open this project on Android, iOS, and the web. To open the web version, press{' '}
-          <ThemedText type="defaultSemiBold">w</ThemedText> in the terminal running this project.
-        </ThemedText>
-      </Collapsible>
-      <Collapsible title="Images">
-        <ThemedText>
-          For static images, you can use the <ThemedText type="defaultSemiBold">@2x</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">@3x</ThemedText> suffixes to provide files for
-          different screen densities
-        </ThemedText>
-        <Image source={require('@/assets/images/react-logo.png')} style={{ alignSelf: 'center' }} />
-        <ExternalLink href="https://reactnative.dev/docs/images">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Custom fonts">
-        <ThemedText>
-          Open <ThemedText type="defaultSemiBold">app/_layout.tsx</ThemedText> to see how to load{' '}
-          <ThemedText style={{ fontFamily: 'SpaceMono' }}>
-            custom fonts such as this one.
-          </ThemedText>
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/versions/latest/sdk/font">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Light and dark mode components">
-        <ThemedText>
-          This template has light and dark mode support. The{' '}
-          <ThemedText type="defaultSemiBold">useColorScheme()</ThemedText> hook lets you inspect
-          what the user&apos;s current color scheme is, and so you can adjust UI colors accordingly.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/develop/user-interface/color-themes/">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Animations">
-        <ThemedText>
-          This template includes an example of an animated component. The{' '}
-          <ThemedText type="defaultSemiBold">components/HelloWave.tsx</ThemedText> component uses
-          the powerful <ThemedText type="defaultSemiBold">react-native-reanimated</ThemedText>{' '}
-          library to create a waving hand animation.
-        </ThemedText>
-        {Platform.select({
-          ios: (
-            <ThemedText>
-              The <ThemedText type="defaultSemiBold">components/ParallaxScrollView.tsx</ThemedText>{' '}
-              component provides a parallax effect for the header image.
-            </ThemedText>
-          ),
-        })}
-      </Collapsible>
-    </ParallaxScrollView>
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.container}>
+        <Text style={styles.title}>Your Favorite Cities</Text>
+
+        {favorites.length === 0 ? (
+          <View style={styles.emptyState}>
+            <Ionicons name="heart-outline" size={64} color="#6c757d" />
+            <Text style={styles.emptyText}>
+              You haven't added any favorite cities yet.
+            </Text>
+            <Text style={styles.emptySubtext}>
+              Search for a city and tap the heart icon to add it to your favorites.
+            </Text>
+          </View>
+        ) : (
+          <FlatList
+            data={favorites}
+            keyExtractor={(item) => item.id}
+            renderItem={renderFavoriteItem}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.listContent}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={refreshFavorites}
+                colors={['#0d6efd']}
+                tintColor="#0d6efd"
+              />
+            }
+          />
+        )}
+      </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  headerImage: {
-    color: '#808080',
-    bottom: -90,
-    left: -35,
-    position: 'absolute',
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#f8f9fa', // Match this with your container background
   },
-  titleContainer: {
+  container: {
+    flex: 1,
+    padding: 16,
+    backgroundColor: '#f8f9fa',
+  },
+  title: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    marginBottom: 16,
+    color: '#212529',
+  },
+  favoriteCard: {
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 16,
+    marginBottom: 12,
     flexDirection: 'row',
-    gap: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  favoriteInfo: {
+    flex: 1,
+  },
+  cityName: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#212529',
+  },
+  countryName: {
+    fontSize: 14,
+    color: '#6c757d',
+    marginBottom: 8,
+  },
+  temperature: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#0d6efd',
+  },
+  condition: {
+    fontSize: 14,
+    color: '#495057',
+    textTransform: 'capitalize',
+    marginBottom: 6,
+  },
+  lastUpdated: {
+    fontSize: 12,
+    color: '#adb5bd',
+    marginTop: 4,
+  },
+  removeButton: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 8,
+  },
+  emptyState: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 32,
+  },
+  emptyText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#343a40',
+    textAlign: 'center',
+    marginTop: 16,
+  },
+  emptySubtext: {
+    fontSize: 14,
+    color: '#6c757d',
+    textAlign: 'center',
+    marginTop: 8,
+  },
+  listContent: {
+    paddingBottom: 16,
   },
 });
