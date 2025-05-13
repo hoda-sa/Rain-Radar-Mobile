@@ -124,6 +124,8 @@ rain-radar/
 │   └── ...                   # Other components
 ├── utils/                    # Utility functions and services
 │   ├── weatherApi.ts         # OpenWeatherMap API integration
+│   ├── unitToggle.ts         # Button Group to switch between metric °C & °F
+│   ├── useWeather.ts         # Custom React hook for fetching weather data
 ├── app.config.js             # Expo configuration with env variables
 ├── app.json                  # Expo app configuration
 ├── .env                      # Environment variables (gitignored)

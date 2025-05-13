@@ -1,3 +1,13 @@
+/**
+ * UnitToggle Component
+ * 
+ * A toggle button group that allows users to switch between metric (°C) and imperial (°F)
+ * temperature units. Changes to the selected unit are communicated to the parent component
+ * via the onUnitChange callback.
+ * 
+ * @module components/UnitToggle
+ */
+
 import React from 'react';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 

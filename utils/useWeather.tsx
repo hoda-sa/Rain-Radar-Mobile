@@ -1,3 +1,12 @@
+/**
+ * Weather Hook
+ * 
+ * A custom React hook that manages weather data fetching, state management,
+ * and user interactions like searching for cities and changing temperature units.
+ * 
+ * @module hooks/useWeather
+ */
+
 import { useState, useEffect } from 'react';
 import { fetchWeatherByCity, fetchForecastByCity } from './weatherApi';
 

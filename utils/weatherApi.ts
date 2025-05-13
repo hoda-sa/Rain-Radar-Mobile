@@ -1,4 +1,12 @@
-import { Platform } from 'react-native';
+/**
+ * Weather API Service
+ * 
+ * This module provides functions to interact with the OpenWeatherMap API,
+ * fetching current weather and forecast data for specified cities.
+ * 
+ * @module utils/weatherApi
+ */
+
 import Constants from 'expo-constants';
 
 const API_KEY = Constants.expoConfig?.extra?.openWeatherApiKey || "";
