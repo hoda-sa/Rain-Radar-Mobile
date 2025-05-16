@@ -51,8 +51,8 @@ Rain Radar is a modern, user-friendly mobile weather application built with Reac
 1. **Clone the repository**
 
 ```bash
-git clone https://github.com/your-username/rain-radar.git
-cd rain-radar
+git clone https://github.com/hoda-sa/Rain-Radar-Mobile.git
+cd Rain-Radar-Mobile
 ```
 
 2. **Install dependencies**

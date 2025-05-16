@@ -1,8 +1,8 @@
-// app/context/FavoritesContext.tsx
+
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// Define types
+
 export interface FavoriteCity {
     id: string; // Using city_country as unique ID
     name: string;
