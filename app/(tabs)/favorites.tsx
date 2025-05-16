@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, FlatList, TouchableOpacity, Alert, SafeAreaView
 import { Ionicons } from '@expo/vector-icons';
 import { useFavorites, FavoriteCity } from '../context/FavoritesContext';
 import { fetchWeatherByCity } from '../../utils/weatherApi';
-import { useRouter } from 'expo-router';
+import { useRouter, router } from 'expo-router';
 import { RefreshControl } from 'react-native';
 
 export default function FavoritesScreen() {
@@ -65,10 +65,19 @@ export default function FavoritesScreen() {
       ? new Date(item.lastUpdated).toLocaleString()
       : 'Never';
 
+    // funsction to show favorite's city's weather
+    const handlePress = () => {
+      // Use router.push to navigate to the index screen with the city name as a parameter
+      router.push({
+        pathname: '/(tabs)',
+        params: { city: item.name }
+      });
+    };
+
     return (
       <TouchableOpacity
         style={styles.favoriteCard}
-
+        onPress={handlePress}
       >
         <View style={styles.favoriteInfo}>
           <Text style={styles.cityName}>{item.name}</Text>
